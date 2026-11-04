@@ -1,5 +1,5 @@
 /* Car Songs — offline support. The version changes whenever the songs or the app change. */
-const VERSION = "car-songs-ce76a516b9";
+const VERSION = "car-songs-0cf1b239ae";
 const ASSETS = [
   "./",
   "index.html",

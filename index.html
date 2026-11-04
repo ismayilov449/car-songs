@@ -21,7 +21,7 @@
 :root{
   --bg:#f2f3f5; --surface:#ffffff; --sunk:#e5e7eb; --ink:#14181e; --muted:#5d6572; --line:#dde0e6;
   --accent:#9c5a00; --focus:#1f5fa8; --bar:rgba(242,243,245,.86); --shadow:0 -10px 30px rgba(20,24,30,.14); --bad:#b3261e;
-  --c-AZ:#1f5fa8; --c-AZRAP:#b3261e; --c-TRRAP:#6b3fa0; --c-TR:#0f7a6d; --c-FR:#a85400; --c-PN:#4a5568;
+  --c-AZ:#1f5fa8; --c-AZRAP:#b3261e; --c-TRRAP:#6b3fa0; --c-TR:#008a72; --c-FR:#a85400; --c-PN:#9c2f7a;
   --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif;
   --f-lcd:"Share Tech Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -31,13 +31,13 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0c0f13; --surface:#161a20; --sunk:#222831; --ink:#e9ecf1; --muted:#98a1af; --line:#272d36;
   --accent:#f2a93b; --focus:#6aa5ee; --bar:rgba(12,15,19,.82); --shadow:0 -10px 30px rgba(0,0,0,.55); --bad:#f07a72;
-  --c-AZ:#6aa5ee; --c-AZRAP:#f07a72; --c-TRRAP:#b493e2; --c-TR:#4cc2b0; --c-FR:#f0a457; --c-PN:#a8b4c6;
+  --c-AZ:#5a92dc; --c-AZRAP:#e0625a; --c-TRRAP:#9c7ad2; --c-TR:#2aa893; --c-FR:#cf7f3a; --c-PN:#cf62a3;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0c0f13; --surface:#161a20; --sunk:#222831; --ink:#e9ecf1; --muted:#98a1af; --line:#272d36;
   --accent:#f2a93b; --focus:#6aa5ee; --bar:rgba(12,15,19,.82); --shadow:0 -10px 30px rgba(0,0,0,.55); --bad:#f07a72;
-  --c-AZ:#6aa5ee; --c-AZRAP:#f07a72; --c-TRRAP:#b493e2; --c-TR:#4cc2b0; --c-FR:#f0a457; --c-PN:#a8b4c6;
+  --c-AZ:#5a92dc; --c-AZRAP:#e0625a; --c-TRRAP:#9c7ad2; --c-TR:#2aa893; --c-FR:#cf7f3a; --c-PN:#cf62a3;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -56,8 +56,9 @@ button{font:inherit;color:inherit}
   -webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
 .appbar .inner{display:grid;gap:10px;padding-block:12px 10px}
 .titlerow{display:flex;align-items:center;flex-wrap:wrap;gap:8px 8px}
-.titlerow h1{font-family:var(--f-display);font-weight:700;font-size:2.15rem;line-height:1;margin:0;letter-spacing:.01em}
-.count{margin-left:auto;font-size:.9rem;color:var(--muted);white-space:nowrap}
+.titlerow h1{font-family:var(--f-display);font-weight:700;font-size:2.15rem;line-height:1;margin:0 auto 0 0;letter-spacing:.01em}
+.metarow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;min-height:20px}
+.count{font-size:.9rem;color:var(--muted);white-space:nowrap}
 .count b{font-family:var(--f-lcd);font-weight:400;color:var(--accent);font-size:1rem}
 .search{position:relative}
 .search svg{position:absolute;left:11px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
@@ -138,7 +139,7 @@ main{padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom,0px) + 28px)}
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--bar);
   -webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabbar .inner{display:grid;grid-template-columns:repeat(3,1fr);height:var(--tab-h)}
+.tabbar .inner{display:grid;grid-template-columns:repeat(4,1fr);height:var(--tab-h)}
 .tab{display:grid;justify-items:center;align-content:center;gap:3px;border:0;background:none;color:var(--muted);
   font-size:11px;font-weight:600;letter-spacing:.02em;cursor:pointer}
 .tab svg{width:25px;height:25px}
@@ -220,6 +221,109 @@ dialog.sheet[open]{animation:up .22s ease-out}
 .lalt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:var(--bg);font-size:.92rem}
 .lalt .n{font-family:var(--f-lcd);color:var(--accent);font-size:1.2rem}
 
+/* now playing card */
+.np{--c:var(--muted);margin-top:14px;padding:14px;border-radius:16px;background:var(--surface);display:grid;gap:10px;
+  border:1px solid color-mix(in srgb,var(--c) 40%,transparent);transition:box-shadow .4s}
+.np.fresh{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+.np-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.np-top .k{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.chipbtn{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:10px;border:0;background:var(--sunk);
+  font-weight:600;font-size:.88rem;cursor:pointer;white-space:nowrap}
+.chipbtn svg{width:16px;height:16px;color:var(--accent)}
+.np-main{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 14px;align-items:center;text-align:left;border:0;background:none;padding:0;cursor:pointer;width:100%}
+.np-main .n{font-family:var(--f-lcd);font-size:3rem;line-height:.9;color:var(--accent);grid-row:1 / span 2;min-width:2ch;text-align:right}
+.np-main .ti{font-size:1.15rem;font-weight:700;line-height:1.2;overflow-wrap:anywhere}
+.np-main .sub{color:var(--muted);font-size:.88rem}
+.np-main .sub .file{font-family:var(--f-lcd);color:var(--c)}
+.np-prog{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:3px;background:var(--accent);transition:width .9s linear}
+.np-prog .time{font-family:var(--f-lcd);font-size:.95rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.np-line{margin:0;font-size:.92rem;color:var(--muted)}
+.np-line b{font-family:var(--f-lcd);font-weight:400;color:var(--accent);font-size:1.05rem}
+.np-line .in{white-space:nowrap;color:var(--ink);font-weight:600}
+.np-btns{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}
+.np-btns .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.np-btns .btn svg{width:18px;height:18px}
+.np-btns .btn.icon{width:48px;padding:0}
+.np-btns .btn.icon svg{width:22px;height:22px}
+.np-hint{margin:0;font-size:.8rem;color:var(--muted)}
+.listenbtn.dice{color:var(--ink)}
+.randbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;
+  background:color-mix(in srgb,var(--accent) 12%,var(--bg));font-weight:600}
+.randbar span{display:inline-flex;align-items:center;gap:8px}
+.randbar svg{width:20px;height:20px;color:var(--accent)}
+
+/* stats */
+.stsec{margin-top:18px;display:grid;gap:8px}
+.sth{margin:6px 4px 0;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.stday{margin:4px 4px 0;font-size:.85rem;color:var(--ink);font-weight:600}
+.stempty{margin:0;padding:16px;color:var(--muted)}
+.card.pad{padding:14px;display:grid;gap:12px}
+.srow{--c:var(--muted);display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;
+  min-height:56px;padding:8px 14px 8px 6px;border:0;background:none;text-align:left;cursor:pointer;position:relative}
+.srow + .srow::before{content:"";position:absolute;top:0;left:62px;right:0;border-top:1px solid var(--line)}
+.srow:active{background:var(--sunk)}
+.srow .trk{font-size:1.3rem}
+.when{display:grid;justify-items:end;gap:2px;font-family:var(--f-lcd);font-size:.95rem;color:var(--ink)}
+.kind{display:inline-flex;align-items:center;gap:3px;font-family:var(--f-body);font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;color:var(--muted)}
+.kind svg{width:11px;height:11px}
+.kind.heard{color:var(--accent)}
+.times{font-family:var(--f-lcd);font-size:1.05rem;color:var(--ink);white-space:nowrap}
+.bigstat{margin:0;color:var(--muted)}
+.bigstat b{color:var(--ink);font-size:1.15rem}
+.bars{display:grid;gap:9px}
+.hbar{--c:var(--muted);display:grid;grid-template-columns:5.6rem minmax(0,1fr) 7.4rem;align-items:center;gap:10px;font-size:.9rem}
+.hbar .val{text-align:right}
+.hbar .lab{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .track{height:14px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.hbar .track i{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--c)}
+.hbar .val{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stclear{margin-top:18px;display:flex;justify-content:center}
+.arow .meta span{white-space:nowrap}
+
+/* car mode: one deliberately dark look, readable at a glance */
+.carmode{--c:#f2a93b;position:fixed;inset:0;z-index:60;background:#000;color:#f4f5f7;display:grid;grid-template-rows:auto 1fr auto;
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  color-scheme:dark}
+html.car-open,html.car-open body{overflow:hidden}
+.cm-top{display:flex;align-items:center;gap:12px;min-height:48px}
+.cm-x{min-height:44px;padding:0 16px;border-radius:12px;border:0;background:#1d2128;color:#f4f5f7;font-weight:600;cursor:pointer}
+.cm-cat{font-family:var(--f-display);font-weight:700;font-size:1.3rem;letter-spacing:.04em;text-transform:uppercase;color:var(--c)}
+.cm-of{margin-left:auto;color:#9aa3b1;font-size:.95rem}
+.cm-mic{width:52px;height:48px;border-radius:12px;border:0;background:#1d2128;color:#f2a93b;display:grid;place-items:center;cursor:pointer}
+.cm-mic svg{width:26px;height:26px}
+.cm-mic.on{background:#f2a93b;color:#000}
+.cm-main{display:grid;align-content:center;justify-items:center;text-align:center;gap:8px;min-height:0}
+.cm-num{font-family:var(--f-lcd);font-size:min(36vw,30vh);line-height:.85;color:#f2a93b;font-variant-numeric:tabular-nums}
+.cm-info{display:grid;gap:10px;justify-items:center;width:100%;max-width:820px}
+.cm-title{font-size:clamp(1.6rem,7vw,3rem);font-weight:700;line-height:1.1;text-wrap:balance;overflow-wrap:anywhere}
+.cm-artist{font-size:clamp(1.1rem,4.6vw,1.8rem);color:#c3cad5}
+.cm-prog{display:flex;align-items:center;gap:12px;width:100%;max-width:560px}
+.cm-prog .bar{height:8px;background:#262b33}
+.cm-prog .bar i{background:var(--c)}
+.cm-prog span{font-family:var(--f-lcd);font-size:1.15rem;color:#c3cad5;white-space:nowrap}
+.cm-next{font-size:clamp(1rem,4.2vw,1.5rem);color:#c3cad5}
+.cm-next b{font-family:var(--f-lcd);font-weight:400;color:#f2a93b}
+.cm-status{font-size:1.05rem;color:#f2a93b}
+.cm-target{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:#1d2128;font-size:clamp(1rem,4.4vw,1.5rem)}
+.cm-target b{font-family:var(--f-lcd);font-weight:400;color:#f2a93b}
+.cm-target .big{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-lcd);font-size:1.6em;color:#f2a93b}
+.cm-target .big svg{width:.8em;height:.8em}
+.cm-untarget{width:36px;height:36px;border-radius:50%;border:0;background:#2a3039;color:#f4f5f7;cursor:pointer}
+.cm-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-btns button{min-height:84px;border-radius:18px;border:0;background:#1d2128;color:#f4f5f7;font-size:1.4rem;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;cursor:pointer}
+.cm-btns button svg{width:30px;height:30px;color:#f2a93b}
+.cm-btns button:active,.cm-x:active,.cm-mic:active{background:#2a3039}
+@media (orientation:landscape) and (max-height:500px){
+  .cm-main{grid-template-columns:auto minmax(0,1fr);justify-items:start;text-align:left;gap:24px}
+  .cm-num{font-size:min(42vh,26vw)}
+  .cm-info{justify-items:start}
+  .cm-btns button{min-height:64px}
+}
+
 @media (max-width:340px){.cats{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){dialog.sheet[open]{animation:none}.meter i{transition:none}}
 </style>
@@ -227,7 +331,10 @@ dialog.sheet[open]{animation:up .22s ease-out}
 <body>
 <header class="appbar" id="appbar">
   <div class="inner gut">
-    <div class="titlerow"><h1 id="title">Songs</h1><span class="count" id="count"></span>
+    <div class="titlerow"><h1 id="title">Songs</h1>
+      <button type="button" class="listenbtn dice" id="diceBtn" aria-label="Random pick" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" stroke="none"></circle></svg>
+      </button>
       <button type="button" class="listenbtn" id="listenBtn" aria-pressed="false" aria-label="Recognise the playing song" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
       </button>
@@ -243,15 +350,17 @@ dialog.sheet[open]{animation:up .22s ease-out}
       <input id="q" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <button type="button" class="clear" id="qclear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm3.7 12.3-1.4 1.4L12 13.4l-2.3 2.3-1.4-1.4 2.3-2.3-2.3-2.3 1.4-1.4 2.3 2.3 2.3-2.3 1.4 1.4-2.3 2.3 2.3 2.3Z"></path></svg></button>
     </div>
-    <div class="pills" id="pills" hidden></div>
+    <div class="metarow"><span class="count" id="count"></span><div class="pills" id="pills"></div></div>
   </div>
 </header>
 
 <main class="inner gut">
   <section class="lcard" id="listenCard" aria-live="polite" hidden></section>
+  <section class="np" id="nowCard" aria-label="Now playing" hidden></section>
   <section class="view" id="view-songs" aria-label="Songs"><div class="empty"><p>Loading songs…</p></div></section>
   <section class="view" id="view-categories" aria-label="Categories" hidden></section>
   <section class="view" id="view-artists" aria-label="Artists" hidden></section>
+  <section class="view" id="view-stats" aria-label="Stats" hidden></section>
 </main>
 
 <nav class="tabbar" aria-label="Sections">
@@ -265,10 +374,37 @@ dialog.sheet[open]{animation:up .22s ease-out}
     <button type="button" class="tab" data-tab="artists">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
       <span>Artists</span></button>
+    <button type="button" class="tab" data-tab="stats">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20h16M7 16V10M12 16V5M17 16v-4"></path></svg>
+      <span>Stats</span></button>
   </div>
 </nav>
 
 <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="in" id="sheetBody"></div></dialog>
+
+<div class="carmode" id="carmode" role="dialog" aria-modal="true" aria-label="Car mode" hidden>
+  <div class="cm-top">
+    <button type="button" class="cm-x" data-c="close">Close</button>
+    <span class="cm-cat" id="cmCat"></span>
+    <span class="cm-of" id="cmOf"></span>
+    <button type="button" class="cm-mic" id="cmListen" data-c="listen" aria-label="Recognise the playing song"></button>
+  </div>
+  <div class="cm-main">
+    <div class="cm-num" id="cmNum">–</div>
+    <div class="cm-info">
+      <div class="cm-title" id="cmTitle"></div>
+      <div class="cm-artist" id="cmArtist"></div>
+      <div class="cm-prog" id="cmProg"><div class="bar"><i id="cmBar"></i></div><span id="cmTime"></span></div>
+      <div class="cm-next" id="cmNext"></div>
+      <div class="cm-status" id="cmStatus" hidden></div>
+      <div class="cm-target" id="cmTarget" hidden><span id="cmTargetText"></span><button type="button" class="cm-untarget" data-c="untarget" aria-label="Remove target">✕</button></div>
+    </div>
+  </div>
+  <div class="cm-btns">
+    <button type="button" data-c="prev"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 5.5v13l-9-6.5 9-6.5Z"></path><rect x="5.4" y="5" width="2.6" height="14" rx="1"></rect></svg>Back</button>
+    <button type="button" data-c="next">Next<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5.5v13l9-6.5-9-6.5Z"></path><rect x="16" y="5" width="2.6" height="14" rx="1"></rect></svg></button>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
