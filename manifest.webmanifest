@@ -1,0 +1,16 @@
+{
+  "name": "Car Songs",
+  "short_name": "Car Songs",
+  "description": "The songs on the car USB stick: search, browse, count Next/Back presses and recognise the playing song.",
+  "start_url": "./#songs",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0f13",
+  "theme_color": "#0c0f13",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
